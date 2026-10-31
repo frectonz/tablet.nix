@@ -15,12 +15,12 @@ let
   tablet-switch = pkgs.writeShellApplication {
     name = "tablet-switch";
     runtimeInputs = [
+      pkgs.gnutar
       pkgs.openssh
-      pkgs.rsync
     ];
     text = ''
-      rsync -az --delete --exclude .direnv --exclude result \
-        -e "ssh ${sshOpts}" ./ ${target}:tablet.nix/
+      tar -c --exclude=.direnv --exclude=result . \
+        | ssh ${sshOpts} ${target} 'mkdir -p tablet.nix && tar -x -C tablet.nix'
       ssh ${sshOpts} ${target} \
         'nix-on-droid switch --flake "$HOME/tablet.nix#tablet"' "$@"
     '';
