@@ -10,7 +10,8 @@
     initExtra = ''
       if [[ -z "$__TABLET_NU" ]]; then
         export __TABLET_NU=1
-        exec nu
+        export SHELL="${config.programs.nushell.package}/bin/nu"
+        exec "$SHELL"
       fi
     '';
   };
